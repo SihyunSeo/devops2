@@ -32,7 +32,7 @@
 
 <script>
 export default {
-  name: 'Git Action Test',
+  name: 'Git Action',
   props: {
     msg: String
   }

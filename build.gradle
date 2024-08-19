@@ -34,12 +34,12 @@ def platform = project.hasProperty('platform') ? project.property('platform') : 
 // docker image 만드는거
 docker {
     if (platform == "frontend") {
-        name "hyunily/test_frontend:" + version
+        name "hyunily/frontend:" + version
         files "frontend/dist"
         buildArgs(['DIST_DIR': "/"])
         dockerfile file('frontend/Dockerfile')
     } else {
-        name "hyunily/test_backend:" + version
+        name "hyunily/backend:" + version
         files tasks.bootJar.outputs.files
         buildArgs(['JAR_FILE': tasks.bootJar.outputs.files.singleFile.name])
         dockerfile file('Dockerfile')

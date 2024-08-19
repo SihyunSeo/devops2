@@ -1,4 +1,4 @@
-name: devops test
+name: devops2 test
 
 on:
   push:
@@ -25,4 +25,4 @@ jobs:
     - name: Build with Gradle
       run: |
         chmod +x ./gradlew
-        ./gradlew build
+        ./gradlew docker -Pplatform=backend

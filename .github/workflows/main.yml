@@ -42,7 +42,7 @@ jobs:
           args: push hyunily/frontend:1.5
 
       - name: restart frontend container
-        uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/ssh-action@v1.0.0
         with:
           host: 175.197.41.193
           username: sihyun
@@ -96,7 +96,7 @@ jobs:
           args: push hyunily/backend:1.5
 
       - name: restart backend container
-        uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/ssh-action@v1.0.0
         with:
           host: 175.197.41.193
           username: sihyun

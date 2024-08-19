@@ -57,7 +57,7 @@ jobs:
             spec:
               containers:
                 - name: frontend
-                  image: ddarahakit2024/frontend:1.5
+                  image: hyunily/frontend:1.5
             EOF
   backend-deploy:
     if: github.ref == 'refs/heads/backend'
@@ -111,5 +111,5 @@ jobs:
             spec:
               containers:
                 - name: backend
-                  image: ddarahakit2024/backend:1.5
+                  image: hyunily/backend:1.5
             EOF

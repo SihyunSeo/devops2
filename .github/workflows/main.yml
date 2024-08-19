@@ -45,7 +45,7 @@ jobs:
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: 175.197.41.193
-          username: test
+          username: sihyun
           password: qwer1234
           port: 8104
           script: |
@@ -99,7 +99,7 @@ jobs:
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: 175.197.41.193
-          username: test
+          username: sihyun
           password: qwer1234
           port: 8104
           script: |

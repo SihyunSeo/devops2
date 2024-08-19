@@ -1,5 +1,5 @@
-FROM nginx:latest
-EXPOSE 80
-ARG DIST_DIR
-COPY ${DIST_DIR} /usr/share/nginx/html
-CMD nginx -g "daemon off;"
+FROM openjdk:17-jdk-buster
+EXPOSE 8080
+ARG JAR_FILE
+ADD ${JAR_FILE} /app.jar
+CMD java -jar /app.jar

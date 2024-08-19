@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'com.example'
-version = '0.0.1-SNAPSHOT'
+version = '1.5'
 
 java {
     toolchain {
@@ -35,9 +35,9 @@ def platform = project.hasProperty('platform') ? project.property('platform') : 
 docker {
     if (platform == "frontend") {
         name "hyunily/test_frontend:" + version
-        files "./frontend/dist"
+        files "frontend/dist"
         buildArgs(['DIST_DIR': "/"])
-        dockerfile file('./frontend/Dockerfile')
+        dockerfile file('frontend/Dockerfile')
     } else {
         name "hyunily/test_backend:" + version
         files tasks.bootJar.outputs.files
@@ -47,9 +47,8 @@ docker {
 }
 
 task buildDocker(type: Exec) {
-//        commandLine './gradlew.bat', 'docker'
     workingDir project.rootDir
-    commandLine 'sh', '-c', 'chmod +x ./gradlew && ./gradlew docker'
+    commandLine './gradlew', 'docker','-Pplatform=backend'
 }
 
 // 터미널에서 명령어 친다고 생각하면 된다.

@@ -86,7 +86,7 @@ jobs:
 
       - name: Login to DockerHub
         uses: actions-hub/docker/login@master
-        with:
+        env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USER }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 

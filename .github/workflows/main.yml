@@ -102,14 +102,16 @@ jobs:
           username: sihyun
           key: ${{ secrets.SSH_KEY }}
           port: 8104
-          script: |
-            kubectl apply -f - <<EOF
-            apiVersion: v1
-            kind: Pod
-            metadata:
-              name: backend
-            spec:
-              containers:
-                - name: backend
-                  image: hyunily/backend:1.5
-            EOF
+          script:
+            whoami
+#          script: |
+#            kubectl apply -f - <<EOF
+#            apiVersion: v1
+#            kind: Pod
+#            metadata:
+#              name: backend
+#            spec:
+#              containers:
+#                - name: backend
+#                  image: hyunily/backend:1.5
+#            EOF

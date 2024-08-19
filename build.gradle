@@ -1,0 +1,79 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.3.2'
+    id 'io.spring.dependency-management' version '1.1.6'
+    id 'com.palantir.docker' version '0.36.0'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+def platform = project.hasProperty('platform') ? project.property('platform') : "frontend"
+
+// docker image 만드는거
+docker {
+    if (platform == "frontend") {
+        name "hyunily/test_frontend:" + version
+        files "./frontend/dist"
+        buildArgs(['DIST_DIR': "/"])
+        dockerfile file('./frontend/Dockerfile')
+    } else {
+        name "hyunily/test_backend:" + version
+        files tasks.bootJar.outputs.files
+        buildArgs(['JAR_FILE': tasks.bootJar.outputs.files.singleFile.name])
+        dockerfile file('Dockerfile')
+    }
+}
+
+task buildDocker(type: Exec) {
+//        commandLine './gradlew.bat', 'docker'
+    workingDir project.rootDir
+    commandLine 'sh', '-c', 'chmod +x ./gradlew && ./gradlew docker'
+}
+
+// 터미널에서 명령어 친다고 생각하면 된다.
+// 위 컨테이너 이미지 가지고, 도커 컨테이너를 만들고 싶다 하면 -> docker run -d {image 이름}
+// 그 명령어를 아래에 적어주면 된다.
+task dockerComposeUp(type: Exec, dependsOn: buildDocker) {
+    // docker-compose내에서 사용한 환경변수가 이 파일내에서 어떤 변수인지 지정
+    environment 'DOCKER_IMAGE_TAG', version
+
+    // docker-compose를 실행(up)하고, 할때마다 build를 새로하고, 백그라운드로 실행해라(-d)
+    commandLine 'docker-compose', 'up', '--build', '-d'
+}
+
+task buildFrontend(type: Exec) {
+    workingDir 'frontend'
+    commandLine '/usr/local/bin/npm', 'run', 'build'
+}
+
+task buildDockerFrontend(type: Exec, dependsOn: buildFrontend) {
+    workingDir project.rootDir
+    commandLine 'sh', '-c', 'chmod +x ./gradlew && ./gradlew docker'
+}
+
+task dockerComposeUpFrontend(type: Exec, dependsOn: buildDockerFrontend) {
+    environment 'DOCKER_IMAGE_TAG', version
+    commandLine 'docker-compose', 'up', '--build', '-d'
+}
